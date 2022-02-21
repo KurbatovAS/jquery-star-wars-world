@@ -1,10 +1,18 @@
 $(document).ready(function () {
-  // +++++ navigation buttons +++++
+  // +++++ app state +++++
+
   const state = {
     films: null,
     filmsGalleryShow: true,
     filmShow: false,
   };
+
+  // ----- app state -----
+
+  // ============================================================
+
+  // +++++ navigation buttons +++++
+
   $("#root").append(`<div class="navigation"></div>`);
   $(".navigation").append(
     '<a href="#" class="navigation__btn" id="goToHome">Home</a>'
@@ -13,18 +21,17 @@ $(document).ready(function () {
     onHomeClickHandler();
   });
 
-  //   $(".films__item").on("click", () => {
-  //     console.log("Click");
-  //     // getSWAPI(url);
-  //   });
-
   // ----- navigation buttons -----
+
+  // ============================================================
 
   // +++++ films gallery +++++
 
   $("#root").append('<section class="films"></section>');
 
   // ----- films gallery -----
+
+  // ============================================================
 
   // +++++ API +++++ start
 
@@ -51,16 +58,16 @@ $(document).ready(function () {
   // ----- API ----- end
 
   function onHomeClickHandler() {
-    if (state.filmsGalleryShow === true && !state.films) {
+    if (state.filmsGalleryShow && !state.films) {
       getSWAPI("films");
     } else {
       if (state.filmShow === true) {
         state.filmShow === false;
-        $(".navigation__delimeter").fadeOut(1);
-        $("#filmTitle").fadeOut(1);
-        $(".film").fadeOut(1);
+        $(".navigation__delimeter").remove();
+        $("#filmTitle").remove();
+        $(".film").remove();
         state.filmsGalleryShow === true;
-        $("#films__gallery").fadeIn(1);
+        getSWAPI("films");
       }
     }
   }
@@ -69,9 +76,11 @@ $(document).ready(function () {
     const fimsMarkup = films.map((film) => {
       return renderFilmMarkup(film);
     });
+
     $(".films").append(
       '<div id="films__gallery"><h2 class="films__heading">Films</h2><ul class="films__list"></ul></div>'
     );
+
     $(".films__list").append(fimsMarkup);
   }
 
@@ -105,9 +114,9 @@ $(document).ready(function () {
     const filmMarkup = renderFilmDetailsMarkup(requiredFilm);
     state.filmsGalleryShow = false;
     $(".navigation").append(
-      `<span class="navigation__delimeter">></span><a href="#" class="navigation__btn" id="filmTitle" >${filmTitle}</a>`
+      `<span class="navigation__delimeter">&gt;</span><a href="#" class="navigation__btn" id="filmTitle" >${filmTitle}</a>`
     );
-    $("#films__gallery").fadeOut(1);
+    $("#films__gallery").remove();
     $(".films").append(filmMarkup);
     state.filmShow = true;
   }
